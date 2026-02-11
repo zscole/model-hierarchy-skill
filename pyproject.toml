@@ -1,0 +1,21 @@
+[project]
+name = "model-hierarchy-skill"
+version = "0.1.0"
+description = "OpenClaw skill for cost-optimized model routing based on task complexity"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Zak Cole", email = "zak@numbergroup.xyz"}]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+test = ["pytest>=7.0.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

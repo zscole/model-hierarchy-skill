@@ -1,0 +1,185 @@
+{
+  "routine_tasks": [
+    {
+      "description": "Read the contents of config.json",
+      "expected_tier": 1,
+      "signals": ["read", "file"]
+    },
+    {
+      "description": "Check if the server is running",
+      "expected_tier": 1,
+      "signals": ["check", "status"]
+    },
+    {
+      "description": "What time is it in Tokyo?",
+      "expected_tier": 1,
+      "signals": ["simple_qa"]
+    },
+    {
+      "description": "Format this JSON and fix the indentation",
+      "expected_tier": 1,
+      "signals": ["format"]
+    },
+    {
+      "description": "List all files in the src directory",
+      "expected_tier": 1,
+      "signals": ["list", "file"]
+    },
+    {
+      "description": "Fetch the homepage of example.com",
+      "expected_tier": 1,
+      "signals": ["fetch", "url"]
+    },
+    {
+      "description": "Filter this list to only items over 100",
+      "expected_tier": 1,
+      "signals": ["filter", "list"]
+    },
+    {
+      "description": "Run the health check",
+      "expected_tier": 1,
+      "signals": ["health", "check"]
+    },
+    {
+      "description": "Convert this date to ISO format",
+      "expected_tier": 1,
+      "signals": ["format", "date"]
+    },
+    {
+      "description": "Get the current git status",
+      "expected_tier": 1,
+      "signals": ["status", "git"]
+    }
+  ],
+  "moderate_tasks": [
+    {
+      "description": "Write a Python function to parse CSV files",
+      "expected_tier": 2,
+      "signals": ["write", "code"]
+    },
+    {
+      "description": "Summarize this 10-page document",
+      "expected_tier": 2,
+      "signals": ["summarize"]
+    },
+    {
+      "description": "Draft an email to the team about the launch",
+      "expected_tier": 2,
+      "signals": ["draft", "write"]
+    },
+    {
+      "description": "Analyze the sales data and find trends",
+      "expected_tier": 2,
+      "signals": ["analyze", "data"]
+    },
+    {
+      "description": "Refactor this function to be more readable",
+      "expected_tier": 2,
+      "signals": ["refactor", "code"]
+    },
+    {
+      "description": "Search for recent articles about AI agents",
+      "expected_tier": 2,
+      "signals": ["search", "research"]
+    },
+    {
+      "description": "Generate unit tests for this module",
+      "expected_tier": 2,
+      "signals": ["generate", "test", "code"]
+    },
+    {
+      "description": "Create a README for this project",
+      "expected_tier": 2,
+      "signals": ["create", "write"]
+    },
+    {
+      "description": "Review this pull request",
+      "expected_tier": 2,
+      "signals": ["review", "code"]
+    },
+    {
+      "description": "Transform this JSON into a markdown table",
+      "expected_tier": 2,
+      "signals": ["transform", "data"]
+    }
+  ],
+  "complex_tasks": [
+    {
+      "description": "Debug why this test is flaky and sometimes fails",
+      "expected_tier": 3,
+      "signals": ["debug"]
+    },
+    {
+      "description": "Design the architecture for a distributed cache system",
+      "expected_tier": 3,
+      "signals": ["design", "architect"]
+    },
+    {
+      "description": "Review this smart contract for security vulnerabilities",
+      "expected_tier": 3,
+      "signals": ["security", "review"]
+    },
+    {
+      "description": "I tried three different approaches and none work. Why?",
+      "expected_tier": 3,
+      "signals": ["failed_attempts"]
+    },
+    {
+      "description": "Explain why the system behaves differently under load",
+      "expected_tier": 3,
+      "signals": ["explain", "why", "complex"]
+    },
+    {
+      "description": "Architect a migration strategy from monolith to microservices",
+      "expected_tier": 3,
+      "signals": ["architect", "design"]
+    },
+    {
+      "description": "This code has a race condition somewhere. Find it.",
+      "expected_tier": 3,
+      "signals": ["debug", "concurrency"]
+    },
+    {
+      "description": "Design the database schema for a multi-tenant SaaS",
+      "expected_tier": 3,
+      "signals": ["design", "architect"]
+    },
+    {
+      "description": "Why does this work in dev but fail in production?",
+      "expected_tier": 3,
+      "signals": ["debug", "why"]
+    },
+    {
+      "description": "Evaluate the tradeoffs between these three approaches",
+      "expected_tier": 3,
+      "signals": ["evaluate", "tradeoffs"]
+    }
+  ],
+  "edge_cases": [
+    {
+      "description": "Read this file and summarize it",
+      "expected_tier": 2,
+      "note": "Compound task - summarize dominates over read"
+    },
+    {
+      "description": "Check the logs and debug why the service crashed",
+      "expected_tier": 3,
+      "note": "Compound task - debug dominates over check"
+    },
+    {
+      "description": "Format this code",
+      "expected_tier": 2,
+      "note": "Code keyword triggers moderate - acceptable tradeoff"
+    },
+    {
+      "description": "Write hello world in Python",
+      "expected_tier": 2,
+      "note": "Write keyword triggers moderate - correct for most code tasks"
+    },
+    {
+      "description": "The previous model couldn't solve this. Try again.",
+      "expected_tier": 3,
+      "note": "Escalation signal - always upgrade"
+    }
+  ]
+}
