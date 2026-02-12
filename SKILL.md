@@ -26,6 +26,12 @@ Route tasks to the cheapest model that can handle them. Most agent work is routi
 | GPT-4o-mini | $0.15 | $0.60 | Quick responses |
 | Claude Haiku | $0.25 | $1.25 | Fast tool use |
 | Gemini Flash | $0.075 | $0.30 | High volume |
+| GLM 5 (Zhipu) | (OpenRouter Z.AI) | (OpenRouter Z.AI) | Routine + moderate text; 200K context; **text-only** — do not use for image/vision |
+| Kimi K2.5 (Moonshot) | $0.45 | $2.25 | Routine + moderate; 262K context; **multimodal (text + image + video)** |
+
+**Text-only models (e.g. GLM 5):** Do not use for any task that requires image input or vision — no photo analysis, screenshots, image-generation tools, or document/chart vision. Route to a vision-capable model (e.g. Kimi K2.5, GPT-4o, Gemini, Claude with vision, GLM-4.5V/4.6V).
+
+**Vision-capable Tier 1/2 (e.g. Kimi K2.5):** Use for routine or moderate tasks that may involve images — screenshots, photo analysis, docs, image-generation orchestration — without moving to premium vision models.
 
 ### Tier 2: Mid ($1-5/M tokens)
 
@@ -51,6 +57,8 @@ Route tasks to the cheapest model that can handle them. Most agent work is routi
 Before executing any task, classify it:
 
 ### ROUTINE → Use Tier 1
+
+**Requires image/vision** → Do not assign to text-only models (GLM 5, etc.). Use a vision-capable model from Tier 1/2 or 3 (e.g. Kimi K2.5, GPT-4o, Gemini, Claude, GLM-4.5V).
 
 Characteristics:
 - Single-step operations
@@ -109,18 +117,22 @@ Examples:
 
 ```
 function selectModel(task):
-    # Rule 1: Escalation override
+    # Rule 1: Vision override (Tier 1/2 includes text-only models)
+    if task.requiresImageInput or task.requiresVision:
+        return VISION_CAPABLE_MODEL  # e.g. Kimi K2.5, GPT-4o, Gemini, Claude; do not use GLM 5 or other text-only
+    
+    # Rule 2: Escalation override
     if task.previousAttemptFailed:
         return nextTierUp(task.previousModel)
     
-    # Rule 2: Explicit complexity signals
+    # Rule 3: Explicit complexity signals
     if task.hasSignal("debug", "architect", "design", "security"):
         return TIER_3
     
     if task.hasSignal("write", "code", "summarize", "analyze"):
         return TIER_2
     
-    # Rule 3: Default classification
+    # Rule 4: Default classification
     complexity = classifyTask(task)
     
     if complexity == ROUTINE:
@@ -200,6 +212,18 @@ sessions_spawn:
   model: deepseek
 ```
 
+**OpenRouter (Tier 1 with vision or text-only):**
+
+```yaml
+# Tier 1 with vision — Kimi K2.5 (multimodal)
+model: openrouter/moonshotai/kimi-k2.5
+# Heartbeats, cron, image-involving tasks: K2.5 handles text and vision.
+
+# Tier 1 text-only — GLM 5 (no vision)
+# model: openrouter/z-ai/glm-5  # exact ID TBD on OpenRouter Z.AI
+# Routine text-only only; for image tasks use Kimi K2.5 or another vision-capable model.
+```
+
 ### Claude Code
 
 ```
@@ -238,6 +262,7 @@ def get_model_for_task(task_description: str) -> str:
 - Use premium models for file I/O
 - Keep expensive model when task is clearly routine
 - Spawn sub-agents on premium models by default
+- Use GLM 5 (or any text-only Tier 1/2 model) for image/vision tasks — e.g. photo analysis, screenshot understanding, image-generation skills, or any tool that takes image input
 
 **DO:**
 - Start mid-tier, adjust based on task
